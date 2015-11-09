@@ -16,9 +16,5 @@
 #         Move 1 from mid to right
 #         It will move 8 steps.
 
-# 解法1. 递归
 def Hanoi(floors):
 	
-
-
-# 解法2. 栈
