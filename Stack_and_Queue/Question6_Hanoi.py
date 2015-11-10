@@ -17,8 +17,57 @@
 #         It will move 8 steps.
 
 # 解法1. 递归
-def Hanoi(floors):
-	
+def Hanoi(floors, left, mid, right):
+	if floors < 1:
+		return 0
+	return process(floors, left, mid, right, left, right)
 
+def process(floors, left, mid, right, src, des):
+	if floors == 1:
+		if src == mid or des == mid:
+			print 'Move 1 from', src, 'to', des
+			return 1
+		else:
+			print 'Move 1 from', src, 'to', mid
+			print 'Move 1 from', mid, 'to', des
+			return 2
+	if src == mid or des == mid:
+		another = right if src == left or des == left else left
+		part1 = process(floors - 1, left, mid, right, src, another)
+		part2 = 1
+		print 'Move', floors, 'from', src, 'to', des
+		part3 = process(floors - 1, left, mid, right, another, des)
+		return part1 + part2 + part3
+	else:
+		part1 = process(floors - 1, left, mid, right, src, des)
+		part2 = 2
+		print 'Move', floors, 'from', src, 'to', mid
+		part3 = process(floors - 1, left, mid, right, des, src)
+		part4 = 1
+		print 'Move', floors, 'from', mid, 'to', des
+		part5 = process(floors - 1, left, mid, right, src, des)
+		return part1 + part2 + part3 + part4 + part5
 
 # 解法2. 栈
+from enum import Enum
+Acion = Enum(No, LToM, MToL, MToR, RToM)
+
+def HanoiByStack(floors, left, mid, right):
+	lS, mS, rS = [], [], []
+	import sys
+	lS.append(sys.maxint)
+	mS.append(sys.maxint)
+	rS.append(sys.maxint)
+	i = floors
+	while i > 0:
+		lS.append(i)
+		i = i - 1
+	step = 0
+	while len(rS) != floors + 1:
+		step += sStackTodStack()
+
+def test():
+	Hanoi(3, 'left', 'mid', 'right')
+
+if __name__ == '__main__':
+	test()
