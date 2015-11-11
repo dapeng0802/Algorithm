@@ -50,7 +50,7 @@ def process(floors, left, mid, right, src, des):
 
 # 解法2. 栈
 from enum import Enum
-Acion = Enum(No, LToM, MToL, MToR, RToM)
+Action = Enum('Action', 'No, LToM, MToL, MToR, RToM')
 
 def HanoiByStack(floors, left, mid, right):
 	lS, mS, rS = [], [], []
@@ -62,12 +62,27 @@ def HanoiByStack(floors, left, mid, right):
 	while i > 0:
 		lS.append(i)
 		i = i - 1
+	record = [Action.No]
 	step = 0
 	while len(rS) != floors + 1:
-		step += sStackTodStack()
+		step += sStackTodStack(record, Action.MToL, Action.LToM, lS, mS, left, mid)
+		step += sStackTodStack(record, Action.LToM, Action.MToL, mS, lS, mid, left)
+		step += sStackTodStack(record, Action.RToM, Action.MToR, mS, rS, mid, right)
+		step += sStackTodStack(record, Action.MToR, Action.RToM, rS, mS, right, mid)
+	return step
+
+def sStackTodStack(record, preNoAct, nowAct, sStack, dStack, src, des):
+	if record[0] != preNoAct and sStack[-1] < dStack[-1]:
+		dStack.append(sStack.pop())
+		print 'Move', dStack[-1], 'from', src, 'to', des
+		record[0] = nowAct
+		return 1
+	return 0
 
 def test():
 	Hanoi(3, 'left', 'mid', 'right')
+	print '*****************************'
+	HanoiByStack(3, 'left', 'mid', 'right')
 
 if __name__ == '__main__':
 	test()
