@@ -26,9 +26,27 @@ def get_max_window(arr, w):
 		result.append(max_value)
 	return result
 
+# 以上为我第一时间想到的解法，但时间复杂度比较高，为 O(n*w)
+# 以下的解法为书中的思路，时间复杂度为 O(n)
+
+def get_max_window2(arr, w):
+	result = []
+	from collections import deque
+	qmax = deque()
+	for i in range(len(arr)):
+		while len(qmax) != 0 and arr[qmax[-1]] <= arr[i]:
+			qmax.pop()
+		qmax.append(i)
+		if qmax[0] == i - w:
+			qmax.popleft()
+		if i >= w - 1:
+			result.append(arr[qmax[0]])
+	return result
+
 def test():
 	arr = [7,3,5,4,8,3,6,5]
 	print get_max_window(arr, 3)
+	print get_max_window2(arr, 3)
 
 if __name__ == '__main__':
 	test()
