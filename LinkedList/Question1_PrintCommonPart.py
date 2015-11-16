@@ -11,7 +11,7 @@ class Node(object):
 
 def print_common_part(head1, head2):
 	print 'Common Part: ',
-	while head1 != None and head2 != None:
+	while head1 and head2:
 		if head1.value < head2.value:
 			head1 = head1.next
 		elif head1.value > head2.value:
