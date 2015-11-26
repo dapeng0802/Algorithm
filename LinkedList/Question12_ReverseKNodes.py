@@ -57,19 +57,29 @@ def reverse_k_nodes2(head, K):
 		if not new_tail:
 			new_tail = pre
 		if count == 0:
-			show_list(result)
 			new_head = pre
 			result = new_head if not result else result
-			print old_tail.value if old_tail else 'None', new_head.value if new_head else 'None'
 			if old_tail:
 				old_tail.next = new_head
 			old_tail = new_tail
 			new_tail = None
-			old_tail.next = new_head
 			next, pre = None, None
 			count = K
+	if count:
+		old_tail.next = reverse_list(pre)
 	
 	return result
+
+def reverse_list(head):
+	if not head:
+		return head
+	next, pre = None, None
+	while head:
+		next = head.next
+		head.next = pre
+		pre = head
+		head = next
+	return pre
 
 def show_list(head):
 	if not head:
@@ -79,7 +89,7 @@ def show_list(head):
 	while cur:
 		print '->', cur.value,
 		cur = cur.next
-	print ''
+	print '-> None'
 
 def test():
 	nodes = [Node(1), Node(3), Node(5), Node(7), Node(9), Node(11), Node(13)]
@@ -91,8 +101,7 @@ def test():
 	print 'head:',
 	show_list(head)
 	print 'reverse_k_nodes:',
-	reverse_k_nodes2(head, 2)
-#	show_list(reverse_k_nodes2(head, 2))
+	show_list(reverse_k_nodes2(head, 4))
 
 if __name__ == '__main__':
 	test()
