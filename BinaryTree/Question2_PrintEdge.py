@@ -131,14 +131,6 @@ def test():
 	node9.left = node12
 	node12.left, node12.right = node15, node16
 	head = node1
-
-#             6
-#            / \
-#           4   7
-#          / \   \
-#         2   5   9
-#        / \     /
-#       1   3   8
 	
 	print 'print_edge1:',
 	print_edge1(head)
