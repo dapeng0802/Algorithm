@@ -6,6 +6,8 @@
 # 给定一棵二叉树的头节点 head，并已知二叉树节点值的类型为 32 位整型。请设计一种二叉树序列化和反序列化
 # 的方案，并用代码实现。
 
+from collections import deque
+
 class Node(object):
 	left, right = None, None
 	def __init__(self, data):
@@ -24,7 +26,6 @@ def serial_by_pre(head):
 
 def recon_by_pre_string(pre_str):
 	values = pre_str.split('!')
-	from collections import deque
 	queue = deque()
 	for i in xrange(len(values)):
 		queue.append(values[i])
@@ -45,6 +46,52 @@ def get_space(num):
 	for i in xrange(num):
 		str_list.append(space)
 	return ''.join(str_list)
+
+def serial_by_level(head):
+	if not head:
+		return '#!'
+	res = str(head.value) + '!'
+	queue = deque()
+	queue.append(head)
+	while len(queue):
+		head = queue.popleft()
+		if head.left:
+			res += str(head.left.value) + '!'
+			queue.append(head.left)
+		else:
+			res += '#!'
+		if head.right:
+			res += str(head.right.value) + '!'
+			queue.append(head.right)
+		else:
+			res += '#!'
+	return res
+
+def recon_by_level_string(level_str):
+	values = level_str.split('!')
+	index = 0
+	head = generate_node_by_string(values[index])
+	index += 1
+	queue = deque()
+	if head:
+		queue.append(head)
+	node = None
+	while len(queue):
+		node = queue.popleft()
+		node.left = generate_node_by_string(values[index])
+		index += 1
+		node.right = generate_node_by_string(values[index])
+		index += 1
+		if node.left:
+			queue.append(node.left)
+		if node.right:
+			queue.append(node.right)
+	return head
+
+def generate_node_by_string(val):
+	if val == '#':
+		return None
+	return Node(int(val))
 
 def test():
 	node1 = Node(1)
@@ -70,9 +117,14 @@ def test():
 #           7
 
 	str_tree = serial_by_pre(head)
-	print 'serialize:', str_tree
+	print 'serialize_by_pre:', str_tree
 	from Question3_PrintTree import print_tree
+	print 'recon_by_pre_string:'
 	print_tree(recon_by_pre_string(str_tree))
+	str_tree = serial_by_level(head)
+	print 'serialize_by_level:', str_tree
+	print 'recon_by_level_string:'
+	print_tree(recon_by_level_string(str_tree))
 
 if __name__ == '__main__':
 	test()
