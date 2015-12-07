@@ -53,6 +53,43 @@ def morris_pre(head):
 		cur1 = cur1.right
 	print ''
 
+def morris_pos(head):
+	if not head:
+		return
+	cur1, cur2 = head, None
+	while cur1:
+		cur2 = cur1.left
+		if cur2:
+			while cur2.right and cur2.right != cur1:
+				cur2 = cur2.right
+			if not cur2.right:
+				cur2.right = cur1
+				cur1 = cur1.left
+				continue
+			else:
+				cur2.right = None
+				print_edge(cur1.left)
+		cur1 = cur1.right
+	print_edge(head)
+	print ''
+
+def print_edge(head):
+	tail = reverse_edge(head)
+	cur = tail
+	while cur:
+		print cur.value,
+		cur = cur.right
+	reverse_edge(tail)
+
+def reverse_edge(head):
+	pre, next = None, None
+	while head:
+		next = head.right
+		head.right = pre
+		pre = head
+		head = next
+	return pre
+
 def test():
 	node1 = Node(1)
 	node2 = Node(2)
@@ -80,6 +117,8 @@ def test():
 	morris_in(head)
 	print 'morris_pre:'
 	morris_pre(head)
+	print 'morris_pos:'
+	morris_pos(head)
 	
 if __name__ == '__main__':
 	test()
