@@ -35,3 +35,25 @@ public int[] accuProduct(int[] arr) {
 	}
 	return result;
 }
+
+/**
+ * 【进阶题目】
+ *   对时间和空间复杂度的要求不变，而且不可以使用除法。
+ */
+public int[] accuProduct2(int[] arr) {
+	if (arr == null || arr.length < 2) {
+		return null;
+	}
+	int[] result = new int[arr.length];
+	result[0] = arr[0];
+	for (int i = 1; i < arr.length; i++) {
+		result[i] = result[i - 1] * arr[i];
+	}
+	int tmp = 1;
+	for (int i = arr.length - 1; i > 0; i--) {
+		result[i] = result[i - 1] * tmp;
+		tmp *= arr[i];
+	}
+	result[0] = tmp;
+	return result;
+}
